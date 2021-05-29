@@ -1,9 +1,12 @@
 package ar.edu.unju.fi.tp8.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,14 +41,21 @@ public class CuentaController {
 	}
 
 	@PostMapping("/cuenta-guardar")
-	public ModelAndView getGuardarCuentasPage(@ModelAttribute("cuenta")Cuenta cuenta) {
-		ModelAndView modelView = new ModelAndView("resultado-cuenta");
+	public ModelAndView getGuardarCuentasPage(@Valid @ModelAttribute("cuenta")Cuenta cuenta,  BindingResult resultadoValidacion) {
+		ModelAndView modelView;
+		if(resultadoValidacion.hasErrors()) {
+		modelView= new ModelAndView("editar-cuenta"); 
+		return modelView;
+		}
+		else {
+		
+		modelView = new ModelAndView("resultado-cuenta");
 		
 		Cliente cliente = clienteService.getClientePorNroDocumento(cuenta.getCliente().getNroDocumento());
 		cuenta.setCliente(cliente);
 		cuentaService.guardarCuenta(cuenta);
 		modelView.addObject("cliente", cuentaService.getAllCuentas());
-		
+		}
 		return modelView;
 	}
 	
