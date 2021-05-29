@@ -17,10 +17,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @Entity
@@ -31,36 +36,50 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Valid
 	@Autowired
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cue_id")
 	private Cuenta cuenta;
 	
+	@NotNull(message="Elija una opción")
 	@Column(name = "cli_tipoDocumento")
 	private String tipoDocumento;
 	
+	@Size(min=7, max=8, message="El numero de DNI debe tener entre 7 y 8 numeros")
 	@Column(name = "cli_nroDocumento")
 	private int nroDocumento;
 	
+	@Size(min=3,message="Ingrese un nombre con un minimo de 3 letras")
+	@NotNull(message="Debe tener un Nombre y Apellido")
 	@Column(name = "cli_nombreApellido")
 	private String nombreApellido;
 	
+	@Email(message="tiene @")
 	@Column(name="cli_email")
 	private String email;
 	
+	@Size(min=8,max=20,message="Minimo 8 caracteres maximo 20")
+	@NotNull(message="Ingrese una contraseña")
 	@Column(name = "cli_password")
 	private String password;
 	
+	@NotNull(message="Ingrese una fecha valida")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "cli_fechaNacimiento") 
 	private LocalDate fechaNacimiento;
 	
+	@Size(min=3,max=4,message="Minimo 3 numero maximo 4")
+	@NotNull(message="Ingrese un codigo de area vlaido")
 	@Column(name="cli_codigoAreaTelefono")
 	private int codigoAreaTelefono;
 	
+	@Size(min=7,max=9,message="Minimo 8 numero maximo 9")
+	@NotNull(message="Ingrese numero de telefono valido")
 	@Column(name="cli_nroTelefono")
 	private int nroTelefono;
 	
+	@NotNull(message="Ingrese una fecha valida")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name="cli_fechaUltimaCompra")
 	private LocalDate fechaUltimaCompra;
@@ -78,7 +97,6 @@ public class Cliente {
 
 	public Cliente() {
 	}
-
 
 	public Cliente(Long id, Cuenta cuenta, String tipoDocumento, int nroDocumento, String nombreApellido, String email,
 			String password, LocalDate fechaNacimiento, int codigoAreaTelefono, int nroTelefono,

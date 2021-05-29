@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,13 +28,18 @@ public class Cuenta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+
+	@NotEmpty(message="Este campo no debe estar vacio")
+	@Size(min=1,message="Minimo un numero")
 	@Column(name = "cue_saldo")
 	private double saldo;
 	
+	@NotNull(message="Ingrese una fecha valida")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "cue_fechaCreacion")
 	private LocalDate fechaCreacion;
 	
+	@NotNull(message="Elija una opcion")
 	@Column(name = "cue_estado")
 	private String estado;
 	

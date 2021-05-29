@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.stereotype.Component;
 
@@ -22,21 +25,29 @@ public class Producto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Size(min=3,max=100,message="ingrese un codigo de al menos 3 digito y maximo de 100" )
+	@NotNull(message="Ingrese un nombre valido")
 	@Column(name = "prod_codigo", nullable = false)
 	private long codigo;
 	
+	@Size(min=3,max=100,message="ingrese un menos 3 digito y maximo de 100" )
+	@NotNull(message="Ingrese un nombre valido")
 	@Column(name = "prod_nombre", length = 100)
 	private String nombre;
 	
+	@Size(min=1,message="Debe ingresar algun valor, de al menos 1 digito")
 	@Column(name = "prod_precio")
 	private double precio;
 	
+	@Size(min=3,max=100,message="ingrese una marca de al menos 3 caracteres y maximo de 100" )
 	@Column(name = "prod_marca", length = 100)
 	private String marca;
 	
+	@Size(min=1,message="Debe ingresar algun valor, de al menos 1 digito")
 	@Column(name = "prod_stock")
 	private int stock;
 	
+	@Valid
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "com_id")
 	private Compra compra;
